@@ -99,7 +99,53 @@ Deploy the FastAPI backend first so you have your production API URL ready for V
 
 ---
 
-## Part 3: Verification & Smoke Test
+## Part 3: Deploy with Docker Compose (Single VM / VPS / Local Production)
+
+For on-premises, AWS EC2, DigitalOcean Droplet, or local production testing:
+
+```bash
+# Clone the repository
+git clone https://github.com/Yash-kumar147/cit-campus-scheduling.git
+cd cit-campus-scheduling
+
+# Build and start all services in detached mode
+docker compose up --build -d
+```
+
+This automatically orchestrates:
+- **`cit_backend`**: FastAPI on `http://localhost:8000` with automated healthchecks
+- **`cit_frontend`**: React 18 production build served by Nginx on `http://localhost:80` (and `http://localhost:5173`)
+- **`cit_mongo`**: MongoDB 7.0 with persistent storage volume on port `27017`
+
+To view logs:
+```bash
+docker compose logs -f
+```
+
+To stop:
+```bash
+docker compose down
+```
+
+---
+
+## Part 4: Alternative PaaS (Railway & Netlify)
+
+### Backend on Railway
+1. Click **New Project** → **Deploy from GitHub repo**.
+2. Select repository. Railway automatically detects `railway.json` and `Dockerfile`.
+3. Add environment variables (`JWT_SECRET`, `ENVIRONMENT=production`, `MONGODB_URI`).
+4. Generate domain and copy your backend URL.
+
+### Frontend on Netlify
+1. Connect repository in Netlify dashboard.
+2. Netlify automatically reads `netlify.toml` (`base = "frontend"`, `publish = "dist"`).
+3. Set environment variable: `VITE_API_URL=https://<your-backend-domain>`.
+4. Click **Deploy Site**.
+
+---
+
+## Part 5: Verification & Smoke Test
 
 Once both are deployed:
 

@@ -1,0 +1,65 @@
+version: '3.8'
+
+services:
+  # 1. FastAPI Backend + Optimization Solver
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: cit_backend
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      - ENVIRONMENT=production
+      - PORT=8000
+      - MONGODB_URI=mongodb://mongo:27017/cit_scheduling
+      - MONGODB_DB_NAME=cit_scheduling
+      - JWT_SECRET=super_secret_cit_scheduling_key_change_in_production
+      - GEMINI_API_KEY=${GEMINI_API_KEY:-}
+      - SOLVER_TIME_LIMIT_SEC=40
+      - SOLVER_NUM_WORKERS=2
+      - CORS_ORIGINS=http://localhost:5173,http://localhost:80,http://127.0.0.1:5173
+    depends_on:
+      mongo:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/api/v1/health/ready"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+
+  # 2. React + Vite Frontend served by Nginx
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: cit_frontend
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "5173:80"
+    depends_on:
+      - backend
+
+  # 3. MongoDB Database (Auto-provisions with persistent volume)
+  mongo:
+    image: mongo:7.0
+    container_name: cit_mongo
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
+
+volumes:
+  mongo_data:
+    driver: local
+

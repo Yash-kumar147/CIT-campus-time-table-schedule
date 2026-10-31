@@ -26,7 +26,7 @@ services:
       - key: SOLVER_NUM_WORKERS
         value: "2"
       - key: CORS_ORIGINS
-        value: "http://localhost:5173"
+        value: "http://localhost:5173,https://cit-campus-scheduling.vercel.app"
 
   # 2. Solver Background Worker (Optional: requires Render Starter/Paid plan)
   # Uncomment below if you have a Render paid plan to run background job queues.

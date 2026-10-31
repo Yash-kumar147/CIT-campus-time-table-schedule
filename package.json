@@ -1,0 +1,24 @@
+{
+  "name": "cit-campus-scheduling-platform",
+  "version": "1.0.0",
+  "private": true,
+  "description": "High-performance automated timetabling and venue booking engine for Chilika Institute of Technology",
+  "scripts": {
+    "build": "npm --prefix frontend install && npm --prefix frontend run build",
+    "dev:frontend": "npm --prefix frontend run dev",
+    "dev:backend": "python main.py",
+    "test:backend": "pytest backend/tests/ -v",
+    "validate": "python validator.py --schedule exports/schedule.json --dataset data/cit_public.json",
+    "validate:disruption": "python validator.py --schedule exports/schedule_after.json --dataset data/cit_public.json --before exports/schedule.json --disruption data/sample_disruption.json"
+  },
+  "keywords": [
+    "timetabling",
+    "fastapi",
+    "react",
+    "or-tools",
+    "constraint-programming"
+  ],
+  "author": "Chilika Institute of Technology",
+  "license": "MIT"
+}
+

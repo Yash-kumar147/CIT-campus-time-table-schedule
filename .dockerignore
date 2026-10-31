@@ -1,0 +1,31 @@
+# Git and CI/CD
+.git
+.github
+.gitignore
+
+# Python environment and cache
+.venv
+venv/
+ENV/
+env/
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+*.log
+
+# Node & Frontend build outputs
+node_modules/
+frontend/node_modules/
+dist/
+frontend/dist/
+
+# Secret and local env files
+.env
+.env.local
+.env.*.local
+
+# Operating system files
+.DS_Store
+Thumbs.db
+

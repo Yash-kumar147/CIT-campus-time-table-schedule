@@ -105,11 +105,25 @@ else:
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
-    allow_origin_regex=r"^https://.*\.vercel\.app$",
+    allow_origin_regex=r"^https?://(localhost|127\.0\.0\.1)(:\d+)?$|^https://.*\.vercel\.app$|^https://.*\.netlify\.app$|^https://.*\.onrender\.com$|^https://.*\.railway\.app$",
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+@app.get("/", tags=["Health"])
+async def root_ping():
+    return {
+        "status": "online",
+        "app": "CIT Campus Scheduling Platform API",
+        "version": "1.0.0",
+        "docs": "/docs",
+        "health": "/api/v1/health/ready"
+    }
+
+@app.get("/health", tags=["Health"])
+async def root_health():
+    return {"status": "healthy"}
 
 app.include_router(router)
 
