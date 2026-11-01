@@ -208,90 +208,8 @@ pytest backend/tests/ -v
 
 ---
 
-## 7. 5-Minute Demo Video Script
 
-**Target Duration:** 4:45 – 5:00 minutes  
-**Presenter:** Antigravity Pair Programmer / Team Lead
-
----
-
-### Phase 1: Platform Overview & Clash-Free Master Schedule (0:00 – 0:50)
-- **Visual:** Open browser to `http://localhost:5173`. Click **"Admin (Dean)"** 1-click login. Dashboard loads showing the 4 primary metric cards: **189 Sessions Scheduled**, **27 Venues Active**, **82% Utilization**, and **0 Conflicts**.
-- **Voiceover:**
-  > *"Welcome to the CIT Campus Scheduling Platform. Chilika Institute of Technology operates 27 teaching and event venues accommodating 40 faculty members and 14 student cohorts. Managing 189 weekly sessions alongside Spectra cultural events and midsem exams requires mathematical certainty. Our platform pairs Google OR-Tools CP-SAT with an intuitive modern interface."*
-- **Visual:** Navigate to **Timetable**. Filter by **Monday**, select **LH101**, show smooth session layout. Point to Period 5 (13:00 – 14:00) showing it is universally reserved for lunch campus-wide.
-
----
-
-### Phase 2: Natural Language AI Gateway in Hinglish (0:50 – 1:45)
-- **Visual:** Switch user in top-right dropdown to **Club Representative (`club@cit.edu`)**. Navigate to **AI Assistant**.
-- **Voiceover:**
-  > *"During college festivals like Spectra, student organizers often communicate booking requirements casually. Here is our AI Gateway. Let's enter a conversational Hinglish prompt."*
-- **Action:** Paste prompt into text area:  
-  `"Hume Spectra ke liye Friday ko 2 se 5 baje tak seminar hall chahiye, 100 students ke liye."`  
-  Click **"Interpret with AI"**.
-- **Visual:** Within 400ms, the card parses into structured JSON draft:
-  - Event Type: `institute_event`
-  - Day: `Friday`
-  - Start Period: `P6 (14:00)`
-  - Duration: `3 hours`
-  - Room Type: `seminar_hall`
-  - Expected Attendance: `100`
-- **Voiceover:**
-  > *"Notice how the Gemini AI Gateway accurately converted colloquial time '2 se 5 baje' to Period 6 with 3-hour duration, selected seminar hall, and extracted 100 attendees. Underneath, our circuit-breaker architecture ensures that if the LLM API is ever offline, a deterministic regex engine parses this with zero latency."*
-
----
-
-### Phase 3: Priority Collision, Displacement & Ranked Alternatives (1:45 – 2:35)
-- **Visual:** Click **"Submit Formal Request"**. The system evaluates venue availability.
-- **Voiceover:**
-  > *"Suppose an Institute Keynote (Priority Tier 3) requests Auditorium 1, which currently has a lower-priority Club Rehearsal (Priority Tier 6) scheduled."*
-- **Visual:** Navigate to **Bookings**. Show the priority displacement badge. The lower-priority booking status updates to `Displaced`, and the system displays 3 recommended alternative venues (Seminar Hall 1, LH102, Amphitheatre) that meet the capacity threshold.
-- **Voiceover:**
-  > *"Our deterministic priority engine adheres strictly to CIT's 6 priority tiers: Exams > Regular Classes > Institute Events > Guest Lectures > Department Events > Club Events. Displaced events are not deleted; they receive ranked alternative slots automatically."*
-
----
-
-### Phase 4: Independent Approvals & Anti-Self-Approval (2:35 – 3:15)
-- **Visual:** While logged in as Club Rep, attempt to click "Approve" on own request. UI displays disabled state with message: *"Self-approval forbidden. An independent authority must approve."*
-- **Visual:** Switch user to **Dept Coordinator (`coord@cit.edu`)**. Navigate to **Approvals**.
-- **Voiceover:**
-  > *"To maintain institutional governance, self-approval is strictly forbidden at both API and UI levels. As Department Coordinator, I can review the room capacity, sound system requirements, and approve the request with an audit remark."*
-- **Action:** Click **"Approve"** with note *"Approved with audio-visual equipment enabled"*.
-
----
-
-### Phase 5: Emergency Disruption & Rescheduling Diff (3:15 – 4:10)
-- **Visual:** Switch user back to **Admin (Dean)**. Navigate to **Approvals -> Disruption Proposals**.
-- **Voiceover:**
-  > *"In the real world, campus disruptions happen. For instance, in our benchmark scenario: Dr. Arvind Sharma takes emergency medical leave on Wednesday and Friday, Lecture Hall LH101 undergoes unscheduled HVAC maintenance, and a new emergency session SES190 must be inserted."*
-- **Visual:** Display the proposed reschedule comparison card:
-  - Base Version: `v1`
-  - Affected Sessions: 45 moved out of 189
-  - Frozen Sessions: 144 untouched
-  - Hard Violations: 0
-- **Visual:** Expand the **Moved Sessions Diff Table**. Show how sessions are migrated to adjacent halls (e.g. LH101 -> LH102) without moving unrelated cohorts.
-- **Voiceover:**
-  > *"Our CP-SAT neighborhood search freezes unaffected sessions to prevent campus-wide chaos. Notice the optimistic lock badge: if another administrator modified the timetable concurrently, the approval would fail with HTTP 409 Conflict to prevent race conditions."*
-- **Action:** Click **"Approve & Publish Reschedule"**. Active version becomes `ver_resched_001`.
-
----
-
-### Phase 6: Midsem Exam Scheduling & Deterministic Verification (4:10 – 5:00)
-- **Visual:** Navigate to **Exam Timetable (`/exams`)**. Show the grid of 41 midsem exams.
-- **Voiceover:**
-  > *"Here is the Midsem Exam schedule. Every examination room strictly enforces CIT's 50% anti-copy seating rule: Effective Capacity equals room capacity divided by 2. For instance, LH101 with 120 seats is capped at 60 students."*
-- **Visual:** Switch to Terminal and run the official command:
-  ```bash
-  python validator.py --schedule exports/schedule.json --dataset data/cit_public.json
-  ```
-  Terminal prints 13 green checkmarks: `VALIDATION STATUS: VALID (PASSED) - 0 Hard Violations`.
-- **Voiceover:**
-  > *"Finally, we run the independent Python validator on our exported schedules. All 13 hard constraints—including double-booking, faculty 4-hour daily limits, lab start periods, and elective basket concurrency—pass with zero violations. CIT Campus Scheduling Platform delivers mathematical rigor, operational resilience, and modern developer experience."*
-
----
-
-## 8. Repository Structure
+## 7. Repository Structure
 
 ```
 ├── .github/
@@ -360,7 +278,7 @@ pytest backend/tests/ -v
 
 ---
 
-## 9. Known Limitations & Roadmap
+## 8. Known Limitations & Roadmap
 
 1. **Continuous Multi-Week Schedules:** Currently optimized for the standard repeating weekly timetable grid (Monday–Friday) plus midsem exam blocks. Future versions will support multi-semester rotational blocks.
 2. **Dynamic Invigilator Roster Optimization:** Midsem exams currently assign venues and cohorts under halved capacity; automated faculty invigilation duty assignment using CP-SAT is scheduled for v2.1.
@@ -368,6 +286,6 @@ pytest backend/tests/ -v
 
 ---
 
-## 10. License
+## 9. License
 Developed for the **Chilika Institute of Technology (CIT)**. Open-source educational platform available under the [MIT License](LICENSE).
 
